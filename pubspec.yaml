@@ -1,4 +1,4 @@
-name: uasd
+name: uasd_pre_videos
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -28,8 +28,12 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  youtube_player_flutter: ^9.1.1
   flutter:
     sdk: flutter
+  http: 1.2.2
+  provider: ^6.0.0
+  shared_preferences: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -52,6 +56,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/images/uasd_logo.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

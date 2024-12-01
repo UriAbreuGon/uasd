@@ -1,6 +1,6 @@
 {
-    "name": "uasd",
-    "short_name": "uasd",
+    "name": "uasd_pre_videos",
+    "short_name": "uasd_pre_videos",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
