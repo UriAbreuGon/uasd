@@ -1,4 +1,4 @@
-name: uasd
+name: uasd_pre_videos
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: 1.2.2
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -52,6 +54,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/images/uasd_logo.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
