@@ -1,125 +1,510 @@
+
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(UASDApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class UASDApp extends StatelessWidget {
+  const UASDApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'UASD App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: LandingPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class LandingPage extends StatelessWidget {
+  
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+    home: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/background.jpg'), // Ruta de la imagen
+              fit: BoxFit.cover, // Ajusta la imagen al tamaño del contenedor
+            ),
+           ),
+            child: Center(
+             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              
+             SizedBox(height: 40),
+               ElevatedButton(
+                onPressed: () {
+                 Navigator.push(
+                 context,
+                 MaterialPageRoute(builder: (context) => EstadoDeudaScreen()), // Actualizado a la nueva clase
+                
+                  );
+                 },
+                   
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Color del botón
+                  ),
+                  child: Text('Acceder'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+ }
+ 
+ 
+class EstadoDeudaScreen extends StatefulWidget {
+  @override
+  _EstadoDeudaScreenState createState() => _EstadoDeudaScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _EstadoDeudaScreenState extends State<EstadoDeudaScreen> {
+  double totalPagar = 10000.00; // Monto inicial de la deuda
+  double porcentajeSeleccionado = 25.0; // Porcentaje inicial
+  double pagoMensual = 0; // Monto mensual calculado
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _calcularPagoMensual(); // Calcular el pago inicial
+  }
+
+  void _calcularPagoMensual() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      pagoMensual = (totalPagar * porcentajeSeleccionado) / 100; // Cálculo dinámico
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('Estado de Deuda'),
+        backgroundColor: const Color.fromARGB(255, 65, 131, 206),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+              child: Text(
+                'Tu Estado de Cuenta',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 13, 13, 14),
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            SizedBox(height: 20),
+
+            // Mostrar el monto total sin permitir su edición
+            Row(
+              children: [
+                Text(
+                  'Total a Pagar (RD\$):',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: 10),
+                Text(
+                  'RD\$ ${totalPagar.toStringAsFixed(2)}',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Selección de porcentaje
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Porcentaje a pagar por mes:',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: 10),
+                DropdownButton<double>(
+                  value: porcentajeSeleccionado,
+                  items: [25.0, 30.0]
+                      .map((porcentaje) => DropdownMenuItem<double>(
+                            value: porcentaje,
+                            child: Text('$porcentaje%'),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      porcentajeSeleccionado = value!;
+                      _calcularPagoMensual();
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Tabla de montos mensuales
+            Table(
+              border: TableBorder.all(color: Colors.black, width: 1),
+              children: [
+                TableRow(
+                  decoration: BoxDecoration(color: Colors.grey[300]),
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          'Mes',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          'Monto',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                ...['Enero', 'Febrero', 'Marzo'].map((mes) {
+                  return TableRow(children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(child: Text(mes)),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text('RD\$ ${pagoMensual.toStringAsFixed(2)}'),
+                      ),
+                    ),
+                  ]);
+                }).toList(),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Botón para pagar ahora
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PagoPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red, // Botón rojo
+              ),
+              child: Text(
+                'Pagar Ahora',
+                style: TextStyle(color: Colors.white), // Texto blanco
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+
+
+
+class PagoPage extends StatefulWidget {
+  const PagoPage({super.key});
+
+  @override
+  _PagoPageState createState() => _PagoPageState();
+}
+
+class _PagoPageState extends State<PagoPage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _numeroTarjetaController = TextEditingController();
+  final TextEditingController _fechaExpiracionController = TextEditingController();
+  final TextEditingController _cvcController = TextEditingController();
+  
+  // Controladores para datos modificables
+  final TextEditingController _nombreController = TextEditingController(text: '');
+  final TextEditingController _cedulaController = TextEditingController(text: '');
+  final TextEditingController _montoController = TextEditingController(text: '');
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Procesar Pago'),
+        backgroundColor: const Color.fromARGB(255, 69, 147, 236),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              // Información editable del usuario
+              _buildTextField(
+                controller: _nombreController,
+                label: 'Nombre',
+                hint: 'Ingrese su nombre',
+                keyboardType: TextInputType.text,
+              ),
+              SizedBox(height: 10),
+              _buildTextField(
+                controller: _cedulaController,
+                label: 'Cédula',
+                hint: 'Ingrese su cédula',
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(height: 10),
+              _buildTextField(
+                controller: _montoController,
+                label: 'Monto a Pagar (RD\$)',
+                hint: 'Ingrese el monto',
+                keyboardType: TextInputType.number,
+              ),
+              Divider(color: Colors.grey),
+
+              // Información fija del servicio
+              _buildInfoText('Servicio: Pago Inscripción'),
+              Divider(color: Colors.grey),
+
+              // Campos de pago
+              _buildTextField(
+                controller: _numeroTarjetaController,
+                label: 'Número de Tarjeta',
+                hint: '1234 5678 9012 3456',
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty || value.length != 16) {
+                    return 'Por favor ingrese un número de tarjeta válido';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTextField(
+                      controller: _fechaExpiracionController,
+                      label: 'Fecha Expiración (MM/AA)',
+                      hint: 'MM/AA',
+                      keyboardType: TextInputType.datetime,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingrese la fecha de expiración';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: _buildTextField(
+                      controller: _cvcController,
+                      label: 'CVC / CVV',
+                      hint: '123',
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value.length != 3) {
+                          return 'Por favor ingrese un código CVC válido';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+
+              // Botón de pago
+              _buildStyledButton(
+               label: 'Pagar Servicio',
+               onPressed: () {
+                 if (_formKey.currentState?.validate() ?? false) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                  builder: (context) => BauchePage(
+                   nombre: _nombreController.text,
+                   cedula: _cedulaController.text,
+                   monto: _montoController.text,
+          ),
+        ),
+      );
+    }
+  },
+  color: const Color.fromARGB(255, 57, 236, 87),
+),
+
+              // Botón para regresar
+              _buildStyledButton(
+                label: 'Retornar',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                color: Colors.grey,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Widget para textos informativos
+  Widget _buildInfoText(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 18,
+        color: Colors.black87,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
+  // Widget para campos de texto
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required TextInputType keyboardType,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide(color: const Color.fromARGB(255, 64, 162, 241), width: 1.5),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+      ),
+      keyboardType: keyboardType,
+      validator: validator,
+    );
+  }
+
+  // Widget para botones estilizados
+  Widget _buildStyledButton({
+    required String label,
+    required VoidCallback onPressed,
+    required Color color,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: EdgeInsets.symmetric(vertical: 15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+class BauchePage extends StatelessWidget {
+  final String nombre;
+  final String cedula;
+  final String monto;
+
+  const BauchePage({
+    super.key,
+    required this.nombre,
+    required this.cedula,
+    required this.monto,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Comprobante de Pago'),
+        backgroundColor: const Color.fromARGB(255, 69, 147, 236),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Comprobante de Pago',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 30),
+            Text(
+              'Nombre: $nombre',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              'Cédula: $cedula',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              'Monto Pagado: RD\$ $monto',
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 30),
+             Icon(Icons.check_circle, color: Colors.green, size: 80),
+             SizedBox(height: 20),
+            Text(
+              '¡Pago realizado con éxito!',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Volver a la página anterior
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text('Volver'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
